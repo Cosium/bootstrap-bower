@@ -1226,7 +1226,7 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.position'])
   showButtonBar: true
 })
 
-.directive('datepickerPopup', ['$compile', '$parse', '$document', '$position', 'dateFilter', 'dateParser', 'datepickerPopupConfig', 'datepickerConfig',
+.directive('datepickerPopup', ['$compile', '$parse', '$document', '$position', 'dateFilter', 'datepickerPopupConfig', 'dateParser', 'datepickerConfig',
 function ($compile, $parse, $document, $position, dateFilter, datepickerPopupConfig, dateParser, datepickerConfig) {
   return {
     restrict: 'EA',
