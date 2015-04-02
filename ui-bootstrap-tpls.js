@@ -1,4 +1,4 @@
-angular.module("ui.bootstrap", ["ui.bootstrap.tpls", "ui.bootstrap.transition","ui.bootstrap.collapse","ui.bootstrap.accordion","ui.bootstrap.alert","ui.bootstrap.bindHtml","ui.bootstrap.buttons","ui.bootstrap.carousel","ui.bootstrap.dateparser","ui.bootstrap.position","ui.bootstrap.datepicker","ui.bootstrap.dropdownToggle","ui.bootstrap.modal","ui.bootstrap.pagination","ui.bootstrap.tooltip","ui.bootstrap.popover","ui.bootstrap.progressbar","ui.bootstrap.rating","ui.bootstrap.tabs","ui.bootstrap.timepicker","ui.bootstrap.typeahead"]);
+angular.module("ui.bootstrap", ["ui.bootstrap.tpls", "ui.bootstrap.transition","ui.bootstrap.collapse","ui.bootstrap.accordion","ui.bootstrap.alert","ui.bootstrap.bindHtml","ui.bootstrap.buttons","ui.bootstrap.carousel","ui.bootstrap.position","ui.bootstrap.datepicker","ui.bootstrap.dropdownToggle","ui.bootstrap.modal","ui.bootstrap.pagination","ui.bootstrap.tooltip","ui.bootstrap.popover","ui.bootstrap.progressbar","ui.bootstrap.rating","ui.bootstrap.tabs","ui.bootstrap.timepicker","ui.bootstrap.typeahead"]);
 angular.module("ui.bootstrap.tpls", ["template/accordion/accordion-group.html","template/accordion/accordion.html","template/alert/alert.html","template/carousel/carousel.html","template/carousel/slide.html","template/datepicker/datepicker.html","template/datepicker/popup.html","template/modal/backdrop.html","template/modal/window.html","template/pagination/pager.html","template/pagination/pagination.html","template/tooltip/tooltip-html-unsafe-popup.html","template/tooltip/tooltip-popup.html","template/popover/popover.html","template/progressbar/bar.html","template/progressbar/progress.html","template/progressbar/progressbar.html","template/rating/rating.html","template/tabs/tab.html","template/tabs/tabset.html","template/timepicker/timepicker.html","template/typeahead/typeahead-match.html","template/typeahead/typeahead-popup.html"]);
 angular.module('ui.bootstrap.transition', [])
 
@@ -755,132 +755,6 @@ function CarouselDemoCtrl($scope) {
   };
 }]);
 
-angular.module('ui.bootstrap.dateparser', [])
-
-    .service('dateParser', ['$locale', 'orderByFilter', function($locale, orderByFilter) {
-
-        this.parsers = {};
-
-        var formatCodeToRegex = {
-            'yyyy': {
-                regex: '\\d{4}',
-                apply: function(value) { this.year = +value; }
-            },
-            'yy': {
-                regex: '\\d{2}',
-                apply: function(value) { this.year = +value + 2000; }
-            },
-            'y': {
-                regex: '\\d{1,4}',
-                apply: function(value) { this.year = +value; }
-            },
-            'MMMM': {
-                regex: $locale.DATETIME_FORMATS.MONTH.join('|'),
-                apply: function(value) { this.month = $locale.DATETIME_FORMATS.MONTH.indexOf(value); }
-            },
-            'MMM': {
-                regex: $locale.DATETIME_FORMATS.SHORTMONTH.join('|'),
-                apply: function(value) { this.month = $locale.DATETIME_FORMATS.SHORTMONTH.indexOf(value); }
-            },
-            'MM': {
-                regex: '0[1-9]|1[0-2]',
-                apply: function(value) { this.month = value - 1; }
-            },
-            'M': {
-                regex: '[1-9]|1[0-2]',
-                apply: function(value) { this.month = value - 1; }
-            },
-            'dd': {
-                regex: '[0-2][0-9]{1}|3[0-1]{1}',
-                apply: function(value) { this.date = +value; }
-            },
-            'd': {
-                regex: '[1-2]?[0-9]{1}|3[0-1]{1}',
-                apply: function(value) { this.date = +value; }
-            },
-            'EEEE': {
-                regex: $locale.DATETIME_FORMATS.DAY.join('|')
-            },
-            'EEE': {
-                regex: $locale.DATETIME_FORMATS.SHORTDAY.join('|')
-            }
-        };
-
-        function createParser(format) {
-            var map = [], regex = format.split('');
-
-            angular.forEach(formatCodeToRegex, function(data, code) {
-                var index = format.indexOf(code);
-
-                if (index > -1) {
-                    format = format.split('');
-
-                    regex[index] = '(' + data.regex + ')';
-                    format[index] = '$'; // Custom symbol to define consumed part of format
-                    for (var i = index + 1, n = index + code.length; i < n; i++) {
-                        regex[i] = '';
-                        format[i] = '$';
-                    }
-                    format = format.join('');
-
-                    map.push({ index: index, apply: data.apply });
-                }
-            });
-
-            return {
-                regex: new RegExp('^' + regex.join('') + '$'),
-                map: orderByFilter(map, 'index')
-            };
-        }
-
-        this.parse = function(input, format) {
-            if ( !angular.isString(input) || !format ) {
-                return input;
-            }
-
-            format = $locale.DATETIME_FORMATS[format] || format;
-
-            if ( !this.parsers[format] ) {
-                this.parsers[format] = createParser(format);
-            }
-
-            var parser = this.parsers[format],
-                regex = parser.regex,
-                map = parser.map,
-                results = input.match(regex);
-
-            if ( results && results.length ) {
-                var fields = { year: 1900, month: 0, date: 1, hours: 0 }, dt;
-
-                for( var i = 1, n = results.length; i < n; i++ ) {
-                    var mapper = map[i-1];
-                    if ( mapper.apply ) {
-                        mapper.apply.call(fields, results[i]);
-                    }
-                }
-
-                if ( isValid(fields.year, fields.month, fields.date) ) {
-                    dt = new Date( fields.year, fields.month, fields.date, fields.hours);
-                }
-
-                return dt;
-            }
-        };
-
-        // Check if date is valid for specific month (and year for February).
-        // Month: 0 = Jan, 1 = Feb, etc
-        function isValid(year, month, date) {
-            if ( month === 1 && date > 28) {
-                return date === 29 && ((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0);
-            }
-
-            if ( month === 3 || month === 5 || month === 8 || month === 10) {
-                return date < 31;
-            }
-
-            return true;
-        }
-    }]);
 angular.module('ui.bootstrap.position', [])
 
 /**
@@ -1226,8 +1100,8 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.position'])
   showButtonBar: true
 })
 
-.directive('datepickerPopup', ['$compile', '$parse', '$document', '$position', 'dateFilter', 'datepickerPopupConfig', 'dateParser', 'datepickerConfig',
-function ($compile, $parse, $document, $position, dateFilter, datepickerPopupConfig, dateParser, datepickerConfig) {
+.directive('datepickerPopup', ['$compile', '$parse', '$document', '$position', 'dateFilter', 'datepickerPopupConfig', 'datepickerConfig',
+function ($compile, $parse, $document, $position, dateFilter, datepickerPopupConfig, datepickerConfig) {
   return {
     restrict: 'EA',
     require: 'ngModel',
@@ -1307,27 +1181,27 @@ function ($compile, $parse, $document, $position, dateFilter, datepickerPopupCon
       }
 
       // TODO: reverse from dateFilter string to Date object
-        function parseDate(viewValue) {
-            if (!viewValue) {
-                ngModel.$setValidity('date', true);
-                return null;
-            } else if (angular.isDate(viewValue) && !isNaN(viewValue)) {
-                ngModel.$setValidity('date', true);
-                return viewValue;
-            } else if (angular.isString(viewValue)) {
-                var date = dateParser.parse(viewValue, dateFormat) || new Date(viewValue);
-                if (isNaN(date)) {
-                    ngModel.$setValidity('date', false);
-                    return undefined;
-                } else {
-                    ngModel.$setValidity('date', true);
-                    return date;
-                }
-            } else {
-                ngModel.$setValidity('date', false);
-                return undefined;
-            }
+      function parseDate(viewValue) {
+        if (!viewValue) {
+          ngModel.$setValidity('date', true);
+          return null;
+        } else if (angular.isDate(viewValue)) {
+          ngModel.$setValidity('date', true);
+          return viewValue;
+        } else if (angular.isString(viewValue)) {
+          var date = new Date(viewValue);
+          if (isNaN(date)) {
+            ngModel.$setValidity('date', false);
+            return undefined;
+          } else {
+            ngModel.$setValidity('date', true);
+            return date;
+          }
+        } else {
+          ngModel.$setValidity('date', false);
+          return undefined;
         }
+      }
       ngModel.$parsers.unshift(parseDate);
 
       // Inner change
@@ -1351,10 +1225,9 @@ function ($compile, $parse, $document, $position, dateFilter, datepickerPopupCon
 
       // Outter change
       ngModel.$render = function() {
-          var date = ngModel.$viewValue ? parseDate(ngModel.$viewValue) : null;
-          var display = date ? dateFilter(date, dateFormat) : '';
-          element.val(display);
-          scope.date = date;
+        var date = ngModel.$viewValue ? dateFilter(ngModel.$viewValue, dateFormat) : '';
+        element.val(date);
+        scope.date = ngModel.$modelValue;
       };
 
       function addWatchableAttribute(attribute, scopeProperty, datepickerAttribute) {
