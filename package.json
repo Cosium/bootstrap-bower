@@ -1,6 +1,9 @@
 {
-  "name": "cos-angular-ui-bootstrap",
+  "name": "@cosium/angular-ui-bootstrap",
   "version": "0.13.31",
+  "publishConfig": {
+    "registry": "http://srv-203.cosium.com:4873"
+  },
   "description": "Bootstrap widgets for Angular",
   "main": "index.js",
   "homepage": "http://angular-ui.github.io/bootstrap/",
